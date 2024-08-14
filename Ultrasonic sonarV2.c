@@ -48,11 +48,13 @@ void stopBoth(float time)
 void moveArm(float speed)
 {
 	motor[Arm] = speed;
+	motor[Arm] = 0;
 }
 
 void moveClaw(float speed)
 {
 	motor[Claw] = speed;
+	motor[Claw] = 0;
 }
 
 void moveStuff()
