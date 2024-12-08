@@ -20,10 +20,12 @@ void rotate(float time, int t)  //t = left or right, 1 is TURN right, 2 is TURN 
 			motor[rightMotor] = -127;		  // Motor on port2 is run at full (-127) power reverse
 			motor[leftMotor]  = 127;
 			wait1Msec(time);
+			break;
 		case 2:
 			motor[rightMotor] = 127;		  // Motor on port2 is run at full (-127) power reverse
 			motor[leftMotor]  = -127;
 			wait1Msec(time);
+			break;
 	}
 }
 
@@ -48,27 +50,23 @@ task main()
 		motor[leftMotor] = 63;
 		frontValue = SensorValue(frontSonar);
 		rightValue = SensorValue(rightSonar);
-		if (frontValue < 5)
-			{
-				stopBoth();
-				if (rightValue < 12)   // difference > 2 means the robo should turn RIGHT
-				{
-				//	backUp(300);
-					rotate(1000, 2);
-				}
-				else if (rightValue > 12) // turn LEFT
-				{
-				//	backUp(300);
-					rotate(1000, 1);
-				}
-				else
-				{
-					difference = 0;
-					frontValue = 0;
-					leftValue = 0;
-					rightValue = 0;
-				}
-			}
+
+		if (rightValue > 12)  // Turn right if the path is clear
+	        {
+	            stopBoth();
+	            rotate(750, 1);  // Rotate right
+	        }
+	        else if (frontValue < 5)  // Turn left if there's an obstacle in front
+	        {
+		    backUp(300)
+	            stopBoth();
+	            rotate(300, 2);  // Rotate left
+	        }
+	        else  // Move forward
+	        {
+	            motor[rightMotor] = 65.4;
+	            motor[leftMotor] = 63;
+	        }
 	}
 
 
